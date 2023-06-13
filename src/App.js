@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { Fragment, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { publicRouter } from "~/routers/routers"
+import { DefaulLayout, HeaderOnly } from '~/layouts';
+import Login from './Pages/Login/Login';
+
 
 function App() {
+  const [token, setToken] = useState();
+  // if (!token) {
+  //   return <Login setToken={setToken} />
+  // }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          {publicRouter.map((route, index) => {
+            const Layout = route.layout === null ? Fragment : route.layout === HeaderOnly ? HeaderOnly : DefaulLayout
+            const Page = route.component;
+
+            // route.layout === null ? console.log("layout") : route.layout === HeaderOnly ? console.log("header layout") : console.log("defaul layout")
+            // console.log("defaul layout");
+            return <Route key={index} path={route.path} element={
+
+              <Layout>
+                <Page />
+
+
+              </Layout>
+
+
+            } />;
+          })}
+
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
